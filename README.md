@@ -4,7 +4,7 @@ Projeto acadêmico desenvolvido para a Atividade IV de Banco de Dados (BCD), com
 
 ## Demonstração
 
-Acesse o site da documentação do projeto: [Restaurante — Vercel]()
+Acesse o site da documentação do projeto: [Restaurante — Vercel](https://restaurantedoatila-restaurante.vercel.app/#empresa)
 
 ## Objetivos
 

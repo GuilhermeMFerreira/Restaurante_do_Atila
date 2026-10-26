@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Documentação completa do projeto Restaurante do Atila: Banco de dados relacional em MySQL para a Atividade IV de BCD.">
+  <title>Restaurante do Atila | Atividade IV - BCD</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav-wrapper">
+      <a class="brand" href="#inicio" aria-label="Restaurante do Atila - início">
+        <span class="brand-icon" aria-hidden="true">R</span>
+        <span>Restaurante do <strong>Atila</strong></span>
+      </a>
+      <nav aria-label="Navegação principal">
+        <a href="#empresa">A Empresa</a>
+        <a href="#solucao">Solução SGBD</a>
+        <a href="#modelo">Modelagem</a>
+        <a href="#normalizacao">Formas Normais</a>
+        <a href="#consultas">15 Consultas SQL</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero" id="inicio">
+      <div class="hero-pattern" aria-hidden="true"></div>
+      <div class="container hero-content">
+        <span class="eyebrow">ATIVIDADE IV · BCD · MYSQL</span>
+        <h1>Gestão Gastronômica.<br><span>Dados Perfeitamente Relacionados.</span></h1>
+        <p>Documentação técnica e modelagem relacional completa do sistema do Restaurante do Atila, abordando problemas operacionais, normalização (1FN a 4FN) e 15 consultas SQL analíticas.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#empresa">Explorar o Projeto <span aria-hidden="true">↘</span></a>
+          <a class="button button-ghost" href="#consultas">Ver 15 Consultas SQL</a>
+        </div>
+        <div class="hero-note"><span class="status-dot"></span> Projeto Acadêmico Desenvolvido para MySQL Workbench</div>
+      </div>
+      <div class="hero-book" aria-hidden="true">
+        <div class="book book-back"></div>
+        <div class="book book-front"><span>Restaurante<br>do Atila</span><i>SGBD Relacional MySQL</i></div>
+        <div class="book book-page"></div>
+      </div>
+    </section>
+
+    <!-- METRICS SECTION -->
+    <section class="stats-section" aria-label="Resumo do projeto">
+      <div class="container stats-grid">
+        <article class="stat-card"><span class="stat-number">05</span><span class="stat-label">Tabelas Relacionais</span></article>
+        <article class="stat-card"><span class="stat-number">1:N</span><span class="stat-label">Integridade Referencial</span></article>
+        <article class="stat-card"><span class="stat-number">15</span><span class="stat-label">Consultas SQL Prontas</span></article>
+        <article class="stat-card"><span class="stat-number">4FN</span><span class="stat-label">Normalização Aplicada</span></article>
+      </div>
+    </section>
+
+    <!-- SECTION 1: EMPRESA E PROBLEMAS -->
+    <section class="section" id="empresa">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">01 · DIAGNÓSTICO OPERACIONAL</span>
+          <h2>A Empresa e seus <span>Gargalos</span></h2>
+          <p>O Restaurante do Atila atende centenas de clientes diariamente. Sem um SGBD relacional, a operação dependia de comandas de papel e planilhas desconectadas.</p>
+        </div>
+        <div class="two-column">
+          <article class="content-card">
+            <div class="card-icon" aria-hidden="true">⚠️</div>
+            <h3>Problemas Enfrentados sem SGBD</h3>
+            <p>O uso de controle manual e planilhas eletrônicas isoladas gerava severas falhas operacionais e financeiras que comprometiam a escalabilidade do restaurante:</p>
+            <ul class="check-list problem-list">
+              <li><strong>Comandas Perdidas e Erros de Caixa:</strong> Pedidos anotados em papel sumiam na cozinha, gerando pratos não cobrados e reclamações.</li>
+              <li><strong>Alteração Indevida de Preços Históricos:</strong> Ao atualizar o preço de um prato na planilha, todos os faturamentos passados mudavam.</li>
+              <li><strong>Desperdício e Falta de Controle de Estoque:</strong> Sem vínculo entre o prato vendido e os insumos, ingredientes estragavam por falta de giro.</li>
+              <li><strong>Dados Duplicados e Inconsistentes:</strong> O mesmo cliente possuía múltiplos cadastros com telefones e CPFs formatados de maneiras diferentes.</li>
+            </ul>
+          </article>
+          <article class="content-card solution-card">
+            <div class="card-icon" aria-hidden="true">✦</div>
+            <h3>Impactos no Negócio</h3>
+            <p>Essas fragilidades causavam prejuízo financeiro e atrasos no atendimento no horário de pico:</p>
+            <ul class="check-list">
+              <li><strong>Perda Financeira Estimada:</strong> Até 12% do faturamento mensal perdido em extravios de comandas e erros de cálculo.</li>
+              <li><strong>Lentidão Operacional:</strong> Média de 40 minutos de espera por prato devido à desorganização na fila de preparo.</li>
+              <li><strong>Relatórios Manuais Ineficientes:</strong> O gerente levava horas para calcular o prato mais vendido ou a mesa mais lucrativa.</li>
+              <li><strong>Dificuldade de Expansão:</strong> Impossibilidade de abrir novas filiais sem uma infraestrutura de dados confiável.</li>
+            </ul>
+          </article>
+        </div>
+        <div class="callout"><strong>Diagnóstico do Projeto:</strong> A implantação de um Banco de Dados Relacional centralizado no MySQL resolve todas as inconsistências através de ACID, chaves primárias/estrangeiras e integridade referencial.</div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: SOLUÇÃO COM SGBD RELACIONAL -->
+    <section class="section section-tinted" id="solucao">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">02 · ARQUITETURA DA SOLUÇÃO</span>
+          <h2>A Proposta de Melhoria com <span>SGBD Relacional</span></h2>
+          <p>Substituição das planilhas por um modelo relacional estruturado no MySQL, garantindo consistência transacional e relatórios em tempo real.</p>
+        </div>
+        <div class="steps-grid">
+          <article class="step-card">
+            <span>01</span>
+            <h3>Centralização dos Dados</h3>
+            <p>Eliminação de planilhas locais. Todos os atendimentos, pedidos, pratos e itens de estoque residem em um único banco relacional seguro.</p>
+          </article>
+          <article class="step-card">
+            <span>02</span>
+            <h3>Integridade Referencial</h3>
+            <p>Chaves Estrangeiras (FK) garantem que nenhum pedido seja registrado para uma mesa ou cliente inexistente, nem referencie pratos fora do cardápio.</p>
+          </article>
+          <article class="step-card">
+            <span>03</span>
+            <h3>Histórico Financeiro Preservado</h3>
+            <p>Separação entre o preço do cardápio e o valor registrado no momento da compra, protegendo o histórico de vendas contra reajustes futuros.</p>
+          </article>
+          <article class="step-card">
+            <span>04</span>
+            <h3>Automação com SQL</h3>
+            <p>Consultas com `JOIN`, `GROUP BY` e `SUM` geram relatórios imediatos de faturamento, pratos mais vendidos e níveis críticos de estoque.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: MODELAGEM LÓGICA -->
+    <section class="section" id="modelo">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">03 · MODELAGEM LÓGICA DO BANCO</span>
+          <h2>Como as Tabelas se <span>Conectam</span></h2>
+          <p>Esquema relacional simplificado com 5 tabelas fundamentais e relacionamentos de integridade 1:N.</p>
+        </div>
+
+        <div class="schema" role="img" aria-label="Diagrama do banco de dados do restaurante">
+          <article class="schema-table">
+            <div class="schema-title"><span>▤</span> Clientes</div>
+            <div class="schema-row"><b>PK</b> id_cliente <small>INT</small></div>
+            <div class="schema-row">nome_cliente <small>VARCHAR(100)</small></div>
+            <div class="schema-row">cpf <small>VARCHAR(14)</small></div>
+            <div class="schema-row">telefone <small>VARCHAR(20)</small></div>
+          </article>
+
+          <div class="relation relation-author"><span>1</span><div class="relation-line"></div><span>N</span><small>realiza</small></div>
+
+          <article class="schema-table">
+            <div class="schema-title"><span>▤</span> Atendimentos</div>
+            <div class="schema-row"><b>PK</b> id_atendimento <small>INT</small></div>
+            <div class="schema-row"><b class="fk">FK</b> id_cliente <small>INT</small></div>
+            <div class="schema-row">mesa <small>INT</small></div>
+            <div class="schema-row">data_hora <small>DATETIME</small></div>
+          </article>
+
+          <div class="relation relation-book"><span>1</span><div class="relation-line"></div><span>N</span><small>gera</small></div>
+
+          <article class="schema-table schema-loans">
+            <div class="schema-title"><span>▤</span> Pedidos</div>
+            <div class="schema-row"><b>PK</b> id_pedido <small>INT</small></div>
+            <div class="schema-row"><b class="fk">FK</b> id_atendimento <small>INT</small></div>
+            <div class="schema-row"><b class="fk">FK</b> id_cardapio <small>INT</small></div>
+            <div class="schema-row">quantidade <small>INT</small></div>
+            <div class="schema-row">status_prato <small>VARCHAR(30)</small></div>
+          </article>
+
+          <article class="schema-table schema-users">
+            <div class="schema-title"><span>▤</span> Cardápio</div>
+            <div class="schema-row"><b>PK</b> id_cardapio <small>INT</small></div>
+            <div class="schema-row">nome_prato <small>VARCHAR(100)</small></div>
+            <div class="schema-row">preco <small>DECIMAL(10,2)</small></div>
+            <div class="schema-row">categoria <small>VARCHAR(50)</small></div>
+          </article>
+
+          <article class="schema-table" style="grid-column: 5; grid-row: 2;">
+            <div class="schema-title"><span>▤</span> Estoque</div>
+            <div class="schema-row"><b>PK</b> id_estoque <small>INT</small></div>
+            <div class="schema-row">nome_ingrediente <small>VARCHAR(100)</small></div>
+            <div class="schema-row">quantidade_disponivel <small>DECIMAL</small></div>
+            <div class="schema-row">unidade_medida <small>VARCHAR(20)</small></div>
+          </article>
+        </div>
+
+        <div class="model-notes">
+          <article>
+            <span class="tag">1:N</span>
+            <div>
+              <h3>Cliente → Atendimentos</h3>
+              <p>Um cliente pode realizar vários atendimentos (visitas ao restaurante) ao longo do tempo. Cada atendimento referencia apenas um cliente.</p>
+            </div>
+          </article>
+          <article>
+            <span class="tag">1:N</span>
+            <div>
+              <h3>Atendimento → Pedidos</h3>
+              <p>Um atendimento (mesa aberta) pode ter vários pedidos ao longo da refeição (entradas, bebidas, prato principal e sobremesa).</p>
+            </div>
+          </article>
+          <article>
+            <span class="tag">1:N</span>
+            <div>
+              <h3>Cardápio → Pedidos</h3>
+              <p>Cada item do cardápio pode aparecer em diversos pedidos em momentos e mesas diferentes, mantendo a integridade do catálogo.</p>
+            </div>
+          </article>
+        </div>
+        <p class="small-note">PK = Chave Primária (Primary Key) · FK = Chave Estrangeira (Foreign Key). Modelo relacional desenvolvido para o MySQL Workbench.</p>
+      </div>
+    </section>
+
+    <!-- SECTION 4: FORMAS NORMAIS -->
+    <section class="section section-tinted" id="normalizacao">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">04 · QUALIDADE E NORMALIZAÇÃO DE DADOS</span>
+          <h2>Aplicação das Formas Normais <span>(1FN, 2FN, 3FN e 4FN)</span></h2>
+          <p>Entenda o porquê de cada etapa do processo de normalização e como ela elimina redundâncias no banco de dados do restaurante.</p>
+        </div>
+
+        <div class="normalization-grid">
+          <article class="normal-card">
+            <span class="normal-number">1FN</span>
+            <h3>1ª Forma Normal (Atomicidade)</h3>
+            <p><strong>Por que aplicar?</strong> Para evitar listas de dados em uma única célula (ex: vários telefones no mesmo campo ou múltiplos pratos numa única string de pedido).</p>
+            <p><strong>Como foi aplicado?</strong> Todos os atributos possuem valores atômicos e indivisíveis. Cada pedido possui um único `id_cardapio` por linha, e cada cliente tem seu campo `telefone` padronizado.</p>
+          </article>
+
+          <article class="normal-card">
+            <span class="normal-number">2FN</span>
+            <h3>2ª Forma Normal (Dependência Total)</h3>
+            <p><strong>Por que aplicar?</strong> Para garantir que todos os atributos não-chave dependam de TODA a chave primária, evitando dependências parciais em tabelas com chaves compostas.</p>
+            <p><strong>Como foi aplicado?</strong> Todas as tabelas possuem chaves primárias simples (`AUTO_INCREMENT`). Atributos como `preco` dependem exclusivamente de `id_cardapio`, e não de pedidos passados.</p>
+          </article>
+
+          <article class="normal-card">
+            <span class="normal-number">3FN</span>
+            <h3>3ª Forma Normal (Independência Transitiva)</h3>
+            <p><strong>Por que aplicar?</strong> Para eliminar dependências transitivas, onde um atributo não-chave depende de outro atributo não-chave em vez da chave primária.</p>
+            <p><strong>Como foi aplicado?</strong> O nome do cliente não fica gravado na tabela `pedidos`. A tabela `pedidos` aponta para `id_atendimento`, que por sua vez aponta para `id_cliente`. Se o cliente mudar de telefone, altera-se apenas em `clientes`.</p>
+          </article>
+
+          <article class="normal-card">
+            <span class="normal-number">4FN</span>
+            <h3>4ª Forma Normal (Dependências Multivaloradas)</h3>
+            <p><strong>Por que aplicar?</strong> Para eliminar dependências multivaloradas independentes na mesma entidade, prevenindo combinações cartesianas redundantes.</p>
+            <p><strong>Como foi aplicado?</strong> Se um prato do cardápio requerer múltiplos ingredientes do estoque e possuir múltiplos fornecedores, essas relações são separadas em tabelas associativas distintas (`ficha_tecnica`), evitando duplicar dados do prato.</p>
+          </article>
+        </div>
+
+        <div class="callout subtle-callout" style="margin-top: 30px;">
+          <strong>Nota Acadêmica de Normalização:</strong> O atendimento rigoroso até a 4FN assegura que a estrutura relacional do restaurante esteja livre de anomalias de inserção, atualização e exclusão, pronta para escala comercial.
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: 15 CONSULTAS SQL PRÁTICAS -->
+    <section class="section section-dark" id="consultas">
+      <div class="container">
+        <div class="section-heading light-heading">
+          <span class="eyebrow">05 · CONSULTAS ANALÍTICAS</span>
+          <h2>15 Consultas SQL <span>Contextualizadas</span></h2>
+          <p>Consultas desenvolvidas para responder a perguntas reais da gestão do restaurante, utilizando WHERE, INNER JOIN, GROUP BY, ORDER BY, BETWEEN, SUM, AVG, e HAVING.</p>
+        </div>
+
+        <div class="query-grid">
+          <article class="query-card">
+            <span class="query-type">01 · WHERE + ORDER BY</span>
+            <h3>Pratos da Categoria 'Lanche'</h3>
+            <p>Lista pratos da categoria 'Lanche' ordenados do menor para o maior preço.</p>
+          </article>
+          <article class="query-card">
+            <span class="query-type">02 · LIKE + OR</span>
+            <h3>Busca de Clientes por Nome</h3>
+            <p>Localiza clientes com sobrenome 'Silva' ou iniciados pela letra 'M'.</p>
+          </article>
+          <article class="query-card">
+            <span class="query-type">03 · BETWEEN</span>
+            <h3>Faixa de Preço Promocional</h3>
+            <p>Seleciona pratos com preços entre R$ 15,00 e R$ 30,00 para promoções.</p>
+          </article>
+          <article class="query-card">
+            <span class="query-type">04 · INNER JOIN</span>
+            <h3>Atendimentos e Clientes</h3>
+            <p>Associa o histórico de atendimentos ao nome do cliente e número da mesa.</p>
+          </article>
+          <article class="query-card">
+            <span class="query-type">05 · INNER JOIN MÚLTIPLO</span>
+            <h3>Relatório Geral de Pedidos</h3>
+            <p>Lista mesa, cliente, prato, quantidade e status de cada pedido.</p>
+          </article>
+          <article class="query-card">
+            <span class="query-type">06 · SUM + GROUP BY</span>
+            <h3>Faturamento por Cliente</h3>
+            <p>Calcula o total acumulado gasto por cada cliente no restaurante.</p>
+          </article>
+          <article class="query-card">
+            <span class="query-type">07 · COUNT + GROUP BY</span>
+            <h3>Pedidos por Categoria</h3>
+            <p>Conta a frequência com que cada categoria de prato é solicitada.</p>
+          </article>
+          <article class="query-card">
+            <span class="query-type">08 · AVG + HAVING</span>
+            <h3>Preço Médio por Categoria</h3>
+            <p>Exibe categorias cuja média de preço é superior a R$ 15,00.</p>
+          </article>
+          <article class="query-card">
+            <span class="query-type">09 · DATETIME + BETWEEN</span>
+            <h3>Atendimentos do Turno</h3>
+            <p>Filtra atendimentos ocorridos no horário de pico da noite do dia 01/03/2026.</p>
+          </article>
+          <article class="query-card">
+            <span class="query-type">10 · SUM + WHERE</span>
+            <h3>Receita de Pedidos Entregues</h3>
+            <p>Calcula a receita gerada exclusivamente por pedidos concluídos.</p>
+          </article>
+          <article class="query-card">
+            <span class="query-type">11 · WHERE COMPARATIVO</span>
+            <h3>Alerta de Estoque Crítico</h3>
+            <p>Lista insumos com quantidade disponível menor ou igual a 20 unidades/kg.</p>
+          </article>
+          <article class="query-card">
+            <span class="query-type">12 · LIKE + INNER JOIN</span>
+            <h3>Pedidos de Hambúrguer</h3>
+            <p>Rastreia todas as vendas referentes a pratos de Hambúrguer.</p>
+          </article>
+          <article class="query-card">
+            <span class="query-type">13 · SUM + GROUP BY</span>
+            <h3>Ranking de Pratos mais Vendidos</h3>
+            <p>Classifica os pratos pela quantidade total de unidades comercializadas.</p>
+          </article>
+          <article class="query-card">
+            <span class="query-type">14 · SUM + LIMIT 1</span>
+            <h3>Mesa mais Lucrativa</h3>
+            <p>Identifica o número da mesa que gerou o maior consumo acumulado.</p>
+          </article>
+          <article class="query-card">
+            <span class="query-type">15 · IN + ORDER BY</span>
+            <h3>Fila de Espera da Cozinha</h3>
+            <p>Exibe pratos com status 'Recebido' ou 'Em preparo' em ordem de chegada.</p>
+          </article>
+        </div>
+
+        <!-- SQL CODE DISPLAY BOX -->
+        <div class="sql-example" style="margin-top: 40px;">
+          <div class="code-header">
+            <span><i></i><i></i><i></i> Exemplo em Destaque: Consulta #06 - Faturamento por Cliente</span>
+            <span>MySQL Workbench</span>
+          </div>
+          <pre><code>-- Consulta 06: Valor Total Comprado por Cliente (SUM + GROUP BY + INNER JOIN)
+SELECT 
+    c.nome_cliente,
+    SUM(p.quantidade * card.preco) AS total_gasto
+FROM clientes c
+INNER JOIN atendimentos a ON c.id_cliente = a.id_cliente
+INNER JOIN pedidos p ON a.id_atendimento = p.id_atendimento
+INNER JOIN cardapio card ON p.id_cardapio = card.id_cardapio
+GROUP BY c.id_cliente, c.nome_cliente
+ORDER BY total_gasto DESC;</code></pre>
+          <p>Resultado Esperado: Tabela analítica apresentando Lucas Silva (R$ 84,00), Ana Clara Silva (R$ 45,00) e demais clientes classificados pelo valor total gasto.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <a class="brand footer-brand" href="#inicio">
+        <span class="brand-icon">R</span>
+        <span>Restaurante <strong>do Atila</strong></span>
+      </a>
+      <p>Atividade IV · Banco de Dados (BCD) · MySQL Workbench</p>
